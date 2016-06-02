@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 use warnings;
-use File::Copy;
+use File::Slurp;
 use File::Basename;
 
 my $resources = dirname(__FILE__);
@@ -17,21 +17,20 @@ chomp $title;
 mkdir $posts;
 my $final = "$posts/$title.$ext";
 print "$draft -> $final\n";
-move($draft, $final) or die "Failed to publish: $!";
+publish($draft, $final);
 
 sub getTitle {
     my ($file) = @_;
-    my @lines = getFileLines($file);
+    my @lines = read_file($file);
 
     my $line = (grep /^title: .+$/,@lines)[0];
     $line =~ /^title:\s+(.+)$/;
     return $1;
 }
 
-sub getFileLines {
-    my ($file) = @_;
-    open(FILE, "<$file");
-    my @lines = <FILE>;
-    close(FILE);
-    return @lines;
+sub publish {
+    my ($s, $d) = @_;
+    my @lines = read_file($s);
+    write_file($d, @lines);
+    unlink $s or "failed to remove draft: $!";
 }
