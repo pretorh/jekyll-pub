@@ -15,16 +15,23 @@ $title = (`$resources/jekyll-titlize.pl $title`)[0];
 chomp $title;
 
 mkdir $posts;
-print "$draft -> $posts/$title.$ext\n";
-move($draft, "$posts/$title.$ext") or die "Failed to publish: $!";
+my $final = "$posts/$title.$ext";
+print "$draft -> $final\n";
+move($draft, $final) or die "Failed to publish: $!";
 
 sub getTitle {
     my ($file) = @_;
-    open(FILE, "<$file");
-    my @lines = <FILE>;
-    close(FILE);
+    my @lines = getFileLines($file);
 
     my $line = (grep /^title: .+$/,@lines)[0];
     $line =~ /^title:\s+(.+)$/;
     return $1;
+}
+
+sub getFileLines {
+    my ($file) = @_;
+    open(FILE, "<$file");
+    my @lines = <FILE>;
+    close(FILE);
+    return @lines;
 }
