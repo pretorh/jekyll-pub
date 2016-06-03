@@ -2,6 +2,7 @@
 use warnings;
 use File::Slurp;
 use File::Basename;
+use DateTime;
 
 my $resources = dirname(__FILE__);
 
@@ -31,6 +32,16 @@ sub getTitle {
 sub publish {
     my ($s, $d) = @_;
     my @lines = read_file($s);
+    @lines = addCurrentDateAfterTitleLine(@lines);
     write_file($d, @lines);
     unlink $s or "failed to remove draft: $!";
+}
+
+sub addCurrentDateAfterTitleLine {
+    my (@lines) = @_;
+    @lines = grep { not $_ =~ /^date: \d+/ } @lines;
+    my ($index) = grep { $lines[$_] =~ /^title/ } 0..$#lines;
+    my $now = DateTime->now()->iso8601().'Z';
+    splice @lines, $index, 0, "date: $now\n";
+    return @lines;
 }

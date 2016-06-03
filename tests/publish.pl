@@ -22,9 +22,13 @@ if (not -f $post) {
     print "post not found: $post\n";
     exit(1);
 }
+
 # and the draft is gone
 if (-f $draft) {
     print __FILE__, " failed\n";
     print "draft still exists: $draft\n";
     exit(1);
 }
+
+# and the date is set in the post
+system("grep '^date: ' $post") and die "'date: ' line not found in post";
