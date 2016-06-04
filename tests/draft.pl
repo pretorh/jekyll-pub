@@ -8,9 +8,11 @@ my $root = dirname(__FILE__) . "/..";
 my $tmp = "$root/.tmp";
 system("rm -rf $tmp");
 mkdir $tmp;
-system("$root/jekyll-new-draft.pl $tmp") and die "exec failed: $!";
+chdir $tmp;
 
-my $expected = "$tmp/_drafts/new.md";
+system("../$root/jekyll-new-draft.pl") and die "exec failed: $!";
+
+my $expected = "_drafts/new.md";
 if (not -f $expected) {
     print __FILE__, " failed\n";
     print "file not found: $expected\n";
