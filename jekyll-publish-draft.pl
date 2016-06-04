@@ -7,9 +7,9 @@ use DateTime;
 my $resources = dirname(__FILE__);
 
 my $draft = $ARGV[0];
-$draft =~ /(.*)\/_drafts\/.+\.(.+)/;
+$draft =~ /(.*)_drafts\/.+\.(.+)/;
 my ($root, $ext) = ($1, $2);
-my $posts = "$root/_posts";
+my $posts = $root . "_posts";
 
 my $title = getTitle($draft);
 $title = (`$resources/jekyll-titlize.pl $title`)[0];

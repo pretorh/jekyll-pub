@@ -13,7 +13,7 @@ chdir $tmp;
 # given a draft
 system("../$root/jekyll-new-draft.pl") and die "exec failed: $!";
 # when publishing
-my $draft = "./_drafts/new.md";
+my $draft = "_drafts/new.md";
 system("../$root/jekyll-publish-draft.pl $draft") and die "exec failed: $!";
 
 # a new published file exists
