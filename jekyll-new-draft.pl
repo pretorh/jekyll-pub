@@ -4,9 +4,7 @@ use File::Copy;
 use File::Basename;
 
 my $resources = dirname(__FILE__);
-
-my $root = @ARGV ? $ARGV[0] : "./";
-my $drafts = "$root/_drafts";
+my $drafts = "_drafts";
 
 mkdir $drafts;
 print "$resources/draft-template.md -> $drafts/new.md\n";
