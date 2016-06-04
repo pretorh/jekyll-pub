@@ -17,7 +17,7 @@ my $draft = "_drafts/new.md";
 system("../$root/jekyll-publish-draft.pl $draft") and die "exec failed: $!";
 
 # a new published file exists
-my $post = "_posts/new-post.md";
+my $post = "_posts/new.md";
 if (not -f $post) {
     print __FILE__, " failed\n";
     print "post not found: $post\n";
