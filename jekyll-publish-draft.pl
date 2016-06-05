@@ -32,20 +32,20 @@ sub getTitle {
 
 sub publish {
     my ($s, $d, $f) = @_;
-    my $final = "$d/$f";
+    my $now = DateTime->now()->iso8601().'Z';
+    my $final = "$d/" . substr($now, 0, 10) . "-$f";
     print "$s -> $final\n";
 
     my @lines = read_file($s);
-    @lines = addCurrentDateAfterTitleLine(@lines);
+    @lines = addDateAfterTitleLine($now, @lines);
     write_file($final, @lines);
     unlink $s or "failed to remove draft: $!";
 }
 
-sub addCurrentDateAfterTitleLine {
-    my (@lines) = @_;
+sub addDateAfterTitleLine {
+    my ($date, @lines) = @_;
     @lines = grep { not $_ =~ /^date: \d+/ } @lines;
     my ($index) = grep { $lines[$_] =~ /^title/ } 0..$#lines;
-    my $now = DateTime->now()->iso8601().'Z';
-    splice @lines, $index, 0, "date: $now\n";
+    splice @lines, $index, 0, "date: $date\n";
     return @lines;
 }

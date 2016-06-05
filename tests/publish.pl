@@ -17,10 +17,17 @@ my $draft = "_drafts/new.md";
 system("../$root/jekyll-publish-draft.pl $draft") and die "exec failed: $!";
 
 # a new published file exists
-my $post = "_posts/new.md";
+my $post = glob "_posts/*new.md";
 if (not -f $post) {
     print __FILE__, " failed\n";
     print "post not found: $post\n";
+    exit(1);
+}
+
+# the file name begins with the date
+if (not $post =~ /\/\d\d\d\d-\d\d-\d\d-/) {
+    print __FILE__, " failed\n";
+    print "post file name does not include a date: $post\n";
     exit(1);
 }
 
