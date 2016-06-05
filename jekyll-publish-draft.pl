@@ -15,7 +15,10 @@ my $title = getTitle($draft);
 $title = (`$resources/jekyll-titlize.pl $title`)[0];
 chomp $title;
 
-mkdir $posts;
+if (not -d $posts) {
+    mkdir $posts or die "failed to create posts dir $posts: $!";
+}
+
 my $final = "$posts/$title.$ext";
 print "$draft -> $final\n";
 publish($draft, $final);

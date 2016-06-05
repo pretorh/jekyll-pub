@@ -10,7 +10,10 @@ my $filename = `$resources/jekyll-titlize.pl "$title"` or die "failed to get tit
 chomp $filename;
 $filename = "$drafts/$filename.md";
 
-mkdir $drafts or die "failed to create drafts dir $drafts: $!";
+if (not -d $drafts) {
+    mkdir $drafts or die "failed to create drafts dir $drafts: $!";
+}
+
 my $command = "sed -e 's/^title: .*\$/title: \"$title\"/' $resources/draft-template.md > $filename";
 print "$command\n";
 system($command) and die "Failed to create draft: $!";
