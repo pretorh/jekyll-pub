@@ -19,9 +19,7 @@ if (not -d $posts) {
     mkdir $posts or die "failed to create posts dir $posts: $!";
 }
 
-my $final = "$posts/$title.$ext";
-print "$draft -> $final\n";
-publish($draft, $final);
+publish($draft, $posts, "$title.$ext");
 
 sub getTitle {
     my ($file) = @_;
@@ -33,10 +31,13 @@ sub getTitle {
 }
 
 sub publish {
-    my ($s, $d) = @_;
+    my ($s, $d, $f) = @_;
+    my $final = "$d/$f";
+    print "$s -> $final\n";
+
     my @lines = read_file($s);
     @lines = addCurrentDateAfterTitleLine(@lines);
-    write_file($d, @lines);
+    write_file($final, @lines);
     unlink $s or "failed to remove draft: $!";
 }
 
